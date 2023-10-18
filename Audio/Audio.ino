@@ -25,12 +25,7 @@ void setup() {
   }
   else {
       Serial.println("Connected to WIFI");
-      delay(3000);
   }
-
-  while (WiFi.status() != WL_CONNECTED)
-
-  delay(1500);
 
   audio.setPinout(I2S_BCLK, I2S_LRC, I2S_DOUT);
 
@@ -40,7 +35,12 @@ void setup() {
 
   //audio.connecttohost("https://github.com/schreibfaul1/ESP32-audioI2S/raw/master/additional_info/Testfiles/Olsen-Banden.mp3");
 
-  audio.connecttohost("http://mp3.ffh.de/radioffh/hqlivestream.mp3");
+  bool ok = false;
+
+  while (ok == false){
+    delay(5000);
+    ok = audio.connecttohost("http://mp3.ffh.de/radioffh/hqlivestream.mp3");
+  }
 
 }
 
