@@ -13,7 +13,7 @@
 
 Audio audio;
 
-int volume = 10;
+int volume = 100;
 
 void setup() {
 
@@ -34,7 +34,7 @@ void setup() {
 
   audio.setPinout(I2S_BCLK, I2S_LRC, I2S_DOUT);
 
-  audio.setVolume(volume);
+  audio.setVolume(volume/10);
 
   //audio.connecttohost("http://vis.media-ice.musicradio.com/CapitalMP3");
 
@@ -58,19 +58,19 @@ void loop()
   int buttonState = digitalRead(PIN_BUTTON_LEFT);
   bool leftButtonPressed = buttonState == LOW;
   if (leftButtonPressed){
-    Serial.println("LEFT BUTTON PRESSED");
+    //Serial.println("LEFT BUTTON PRESSED");
     if (volume > 0) volume--;
     audio.setVolume(volume/10);
-    Serial.println(volume);
+    //Serial.println(volume);
   }
 
   buttonState = digitalRead(PIN_BUTTON_RIGHT);
   bool rightButtonPressed = buttonState == LOW;
   if (rightButtonPressed){
-    Serial.println("RIGHT BUTTON PRESSED");
+    //Serial.println("RIGHT BUTTON PRESSED");
     if (volume < 210) volume++;
     audio.setVolume(volume/10);
-    Serial.println(volume);
+    //Serial.println(volume);
   }
 
   audio.loop();
