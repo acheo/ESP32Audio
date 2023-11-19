@@ -1,3 +1,10 @@
+#define BLACK 0x0000
+#define WHITE 0xFFFF
+
+#include <SPI.h>
+
+#include <TFT_eSPI.h> // Hardware-specific library
+
 #include <WiFiManager.h>
 
 #include "Audio.h"
@@ -13,11 +20,26 @@
 
 Audio audio;
 
-int volume = 100;
+TFT_eSPI tft = TFT_eSPI();
+TFT_eSprite sprite = TFT_eSprite(&tft);
+
+int volume = 0;
+
+int update_count = 0;
+
+String msg = "0";
 
 void setup() {
 
   Serial.begin(115200);
+
+  tft.init();
+
+  tft.setRotation(0);
+
+  tft.fillScreen(TFT_WHITE);
+
+  sprite.createSprite(128,128);
 
   WiFiManager wm;
   wm.setDebugOutput(true);
@@ -71,6 +93,25 @@ void loop()
     if (volume < 210) volume++;
     audio.setVolume(volume/10);
     //Serial.println(volume);
+  }
+
+  msg = String(volume);
+
+  update_count++;
+
+  if (update_count > 5){
+
+    sprite.fillSprite(TFT_WHITE);
+
+    sprite.setTextDatum(4);
+    sprite.setTextColor(TFT_BLACK);
+    sprite.setTextFont(6);
+    sprite.drawString(msg,64,64);
+
+    sprite.pushSprite(0,0);
+
+    update_count = 0;
+
   }
 
   audio.loop();
